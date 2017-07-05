@@ -8,7 +8,7 @@
 		<meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<title>Sistema Caçambas</title>
+		<title>Sistema Caçambas Bacana</title>
         <link rel="icon" type="text/css" href="imagens/favicon.png">
 		
 		<!-- jquery - link cdn -->
@@ -67,7 +67,7 @@
                         <li class="active">
                             <a href="#"><span class="glyphicon glyphicon-log-out" style="color: red"></span>Logout</a>
                         </li>    
-                    </ul>
+                    </ul>   
 
                     
                 </div>
