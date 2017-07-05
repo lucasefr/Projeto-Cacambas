@@ -1,0 +1,63 @@
+<?php
+$root = '/xampp/htdocs/repo';
+$iter = new RecursiveIteratorIterator(
+	new RecursiveDirectoryIterator($root, RecursiveDirectoryIterator::SKIP_DOTS),
+	RecursiveIteratorIterator::SELF_FIRST,
+	RecursiveIteratorIterator::CATCH_GET_CHILD // Ignore "Permission denied"
+);
+function has_gitignore_file($dir) {
+	return is_file("$dir/.gitignore");
+}
+echo "DIRS:<br>";
+echo $root."<br>";
+$gi = array();
+if(has_gitignore_file($root)) {
+	$gi[] = "$root/.gitignore";
+}
+foreach ($iter as $scanpath) {
+    if (is_dir($scanpath) && strpos($scanpath,".git") == false) {
+		$thisDir = str_replace("\\","/",$scanpath);
+		echo $thisDir."<br>";
+        if(has_gitignore_file($thisDir)) {
+			$gi[] = $thisDir."/.gitignore";
+		}
+    }
+}
+echo "<br>.GITIGNORE FILES:<br>";
+print_r($gi);
+function parse_git_ignore_file($file) { # $file = '/absolute/path/to/.gitignore'
+  $dir = dirname($file);
+  $matches = array();
+  $lines = file($file);
+  foreach ($lines as $line) {
+    $line = trim($line);
+    if ($line === '') continue;                 # empty line
+    if (substr($line, 0, 1) == '#') continue;   # a comment
+    if (substr($line, 0, 1) == '!') {           # negated glob
+      $line = substr($line, 1);
+      $files = array_diff(glob("$dir/*"), glob("$dir/$line"));
+    } else {                                    # normal glob
+      $files = glob("$dir/$line");
+    }
+    $matches = array_merge($matches, $files);
+  }
+  return $matches;
+}
+echo "<br><br>FILES TO EXCLUDE:<br>";
+$excluded = array();
+foreach ($gi as $scanpath) {
+	echo "<br>CHECKING: ".$scanpath."...<br>";
+    $excludedTest = (parse_git_ignore_file($scanpath));
+	if (count($excludedTest) > 0) {
+		$excluded = array_merge($excluded, $excludedTest);
+		echo 'FILES ADDED TO ARRAY<br>';
+	} else {
+		echo 'NOTHING TO EXCLUDE<br>';
+	}
+	print_r($excluded);
+	echo "<br>";
+}
+echo "<br><br>EXCLUDED:<br>";
+print_r($excluded);
+echo "<br><br>";
+?>

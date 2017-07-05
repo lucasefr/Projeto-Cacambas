@@ -1,0 +1,30 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 03/07/2017, 20:57:28
+    Author     : lucas
+*/
+
+.formulario {
+    position: absolute;
+    left: 50%;
+    right: 50%;
+    bottom: 50%;
+    top: 50%;
+    background: white;
+    padding: 20px 20px 20px 20px;
+}
+
+.modal-total {
+    background: white;
+    width: 700px;
+    
+}
+.modal-footer {
+    position: absolute;
+    left: 0px;
+}
+
